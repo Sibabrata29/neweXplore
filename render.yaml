@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: encore-streamlit
+    name: encore-streamlit-render
     runtime: python
     region: oregon
     plan: free

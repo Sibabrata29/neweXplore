@@ -4,11 +4,12 @@ import difflib
 from collections import OrderedDict
 from pathlib import Path
 
+
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
-import streamlit as st
+import streamlit as st, os
 from sklearn.neighbors import NearestNeighbors
 
 # RDKit & 3D
@@ -22,15 +23,28 @@ import py3Dmol
 # --- DATA LOADING ---
 # Define data file paths
 
-DATA_DIR = 'E:/15 Polyexplore/predictions_polyprop/'
-FEATURES_FILE = DATA_DIR + 'polyeXplore model feature & index.xlsx'
-LIBRARY_FILE = DATA_DIR + 'polyeXplore polymer library data.xlsx'
-SMILES_FILE = DATA_DIR + 'polyeXplore_smiles.xlsx'
+
+
+
+# Base directory = repo root
+BASE_DIR = Path(__file__).resolve().parent.parent  # if script is in app/, go up one
+DATA_DIR = BASE_DIR / "data"
+
+FEATURES_FILE = DATA_DIR / "polyeXplore model feature & index.xlsx"
+LIBRARY_FILE = DATA_DIR / "polyeXplore polymer library data.xlsx"
+SMILES_FILE = DATA_DIR / "polyeXplore_smiles.xlsx"
+
+
+st.write("DEBUG FEATURES_FILE =", str(FEATURES_FILE))
+st.write("DEBUG LIBRARY_FILE  =", str(LIBRARY_FILE))
+st.write("DEBUG SMILES_FILE   =", str(SMILES_FILE))
+
 
 # --- CONFIG ---
 
 @st.cache_data(show_spinner=False)
 def load_data(features_file, library_file):
+    st.write("LOAD_DATA ARGS:", str(features_file), "|", str(library_file))
     features = pd.read_excel(features_file, sheet_name='polyFeature', index_col=0)
     properties = pd.read_excel(features_file, sheet_name='polyIndex', index_col=0)
     library = pd.read_excel(library_file, sheet_name='reference', index_col=0)
